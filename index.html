@@ -1,0 +1,948 @@
+<!DOCTYPE HTML>
+
+<!-- 
+/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+Welcome to my single page web portfolio !
+
+This is a single static html file with several tabs for content
+
+It is intended to demonstrate the following, while
+still having modern features like  instant navigation, theme switching,
+and a social feed !
+
+ -- minimal javascript
+ -- responisive css
+ -- static html 
+ -- resuable component 'widgets'
+ -- extensible content modeling
+
+This page was composed with Soupault, static web precompiler
+
+libraries included ( - not npm pkgs, these are staticly bundled - ):
+   masto-feed.js : embedded mastodon feed
+    -- shows latest toots, replys and boosts from a masto user's account
+
+   awsm.css: a bare-bones, classless stylesheet
+    -- base styles entire blueprint
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NOTE:                                  %%
+%% this file is a compiled html file,     %%
+%% and is composed of many smaller pieces %% 
+%% which can be individually configured   %% 
+%% in the blueprints build directory      %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+-->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -html-head-begin-->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" 
+            content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" 
+            href="css/awsm.css" 
+            id="theme">
+      <link rel="stylesheet" 
+            id="preload-theme">
+      <link rel="stylesheet" 
+            id="prism-theme">
+      <title> 💻 &nbsp; Jacob Ybarra - Web Dev </title>
+  </head>
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- html-head-end  -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- 
+     -template-css-begin 
+     ---------------------
+     - the template css applies small overrides of awsm.css  
+
+     - meant to apply general changes, independent components self-contain local element css
+
+     - css specific to this web page is primarily written inline, not in this section or
+       or the individual component css, for re-useablity
+     ---------------------
+-->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+ <section>
+
+  <style>
+
+   html 
+   {
+    font-family:
+      system-ui,
+      -apple-system,BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      Oxygen,
+      Ubuntu,
+      Cantarell,
+      "PT Sans",
+      "Open Sans",
+      "Fira Sans",
+      "Droid Sans",
+      "Helvetica Neue",
+      Helvetica,
+      Arial,
+      sans-serif;
+   }
+
+   body 
+   { 
+     overflow-y: scroll;
+     overflow-wrap: normal;
+   }
+   main, main footer, main article 
+   {
+     margin: 0 auto;
+     word-wrap: break-word;
+     hyphens: none;
+     max-width: 50rem!important;
+     text-align: left;
+
+   }
+   section + section  { margin-top: 0; }
+   p { hyphens: none; }
+   a { text-decoration: none; }
+   hr { background: skyblue; margin: -1rem; }
+   h1, h2, h3, h4, h5, h6 {  margin: 1em 0 0; line-height: 1.5; }
+   h1 { font-size: 2rem; }
+   h2 { font-size: 1.2rem; }
+   blockquote { font-size: .5!important; }
+   article { max-width: fit-content; }
+   /* big screens */
+   @media screen and (min-width: 740px) { body { font-size: 1.2rem; } }
+   /* lil screens */
+   @media screen and (max-width: 330px) 
+   {
+     h1 { font-size: 1.7rem!important;}
+     h2 { font-size: 1.2rem!important;}
+     h3 { font-size: 1rem!important;}
+     nav { font-size: 1rem;}
+     header img 
+     { 
+       width: 4.5rem!important ; 
+       height: 4.5rem!important;
+       margin-top: 1rem;
+     }
+     img { width: 30rem!important; height: auto!important; margin: inherit; }
+     p { font-size: 1rem;}
+     fieldset p {font-size: .8rem;}
+     h4 img {width: 1.3rem!important; height: 1.6rem!important;}
+   }
+   /* tooltip container */
+   .tooltip .tooltiptext 
+    {
+     visibility: hidden;
+     width: fit-content;
+     color: inherit;
+     opacity: .9;
+     text-align: center;
+     padding: .5rem;
+     padding-right: 1rem;
+     border-radius: 6px;
+     position: absolute;  /* Position the tooltip text */
+     z-index: 1;
+    }
+   /* Show the tooltip text when you mouse over the tooltip container */
+   .tooltip:hover .tooltiptext { visibility: visible; }
+   .tooltiptext 
+   { 
+     color: darkgreen; 
+     font-style: italic; 
+     font-size: .9rem; 
+     padding-top: .8rem; 
+     padding-bottom: .8rem; 
+   }
+   /* details container */
+   details[open] 
+   { 
+     padding-bottom: 0.5em; 
+     border-bottom: 1px solid darkred; 
+     margin-left: 3rem; 
+   }
+   summary { border-bottom: 0px; }
+   summary emp 
+   { 
+     font-weight: 500; 
+     cursor: pointer; 
+     color: saddlebrown; 
+     margin-left: 1rem; 
+   }
+   .summary-list p 
+   { 
+     color: darkblue; 
+     font-size: 1rem; 
+     font-weight: 700; 
+     margin-left: 1rem; 
+   }
+   details, h3 {font-size: 1rem;}
+
+  </style>
+
+ </section>
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -template-css-end -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+  <body>
+
+   <main>
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -header-start -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+     <section>
+
+       <style>
+
+         header { max-width: auto; align: center; }
+         header h1 { line-height: 1.2; text-align: center; font-size: 2.8rem; font-style: italic; }
+         header img 
+         { 
+          align: center; 
+          border-radius: 50%; 
+          outline: 2px solid black;
+          height: 9rem;
+          width: 9rem;
+         }
+         header p 
+         { 
+           font-size:1.3rem; 
+           text-align: center;
+         }
+
+       </style>
+
+       <span>
+       <header>
+
+       <h1>
+         Jacob Ybarra
+         <br><br>
+          <img src="assets/selphie.png" 
+               alt="A photo of myself, Jacob Ybarra, outdoors. 
+                    I have medium length curly hair and glasses" 
+          />
+       </h1>
+       <br>
+       <p> 
+       ✨ &nbsp; Freelance Web Developer ✨ &nbsp; 
+       </p>
+
+      </header>
+      </span>
+
+     </section>
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -header-end -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -tabnav-begin-->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+    <section>
+
+      <style>
+
+       nav ul 
+       {
+         list-style: none;
+         font-weight: bold;
+         text-align: center;
+         align: center;
+       }
+       /* .tab { overflow: hidden; } */
+       .tab a 
+       { 
+         outline: none; 
+         cursor: pointer; 
+         transition: 0.3s; 
+       }
+       /* .tab a.active { color: green !important; } */
+       .tabcontent { display: none; }
+       .tabcontent { animation: fadeEffect 1s; /* Fading effect takes 1 second */ }
+       @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
+
+      </style>
+
+      <span>
+      <nav class="tab">
+
+        <ul>
+          <li> <a href="javascript:void()" 
+                  class="tablinks" 
+                  role="button" 
+                  onclick="openTab(event, 'tab-1')">Info</a> 
+          </li>
+          <li> <a href="javascript:void()" 
+                  class="tablinks" 
+                  role="button" 
+                  onclick="openTab(event, 'tab-2')">Mastodon</a> 
+          </li>
+          <li> <a href="javascript:void()" 
+                  class="tablinks" 
+                  role="button" 
+                  onclick="openTab(event, 'tab-3')">Portfolio</a> 
+          </li>
+          <li class="tooltip"> 
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -themeswitcher-begin -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+          <section>
+
+            <script>
+
+             var version = '3.0.7';
+             var storedVersion = localStorage.getItem('awsm-version');
+
+             if (version !== storedVersion) 
+             {
+               localStorage.removeItem('awsm-current-theme');
+               localStorage.setItem('awsm-version', version);
+             }
+
+             var currentTheme = localStorage.getItem('awsm-current-theme');
+             reloadTheme(currentTheme);
+
+             function reloadTheme(theme) 
+             {
+              var themeNode = document.getElementById('theme');
+              var themePreloadNode = document.getElementById('preload-theme');
+              themePreloadNode.onload = onPreloadThemeLoad.bind(null, theme);
+              themePreloadNode.setAttribute('href', getThemePath(theme));
+               if (window.isPrismThemeShouldBeLoaded) 
+               {
+                var prismThemeNode = document.getElementById('prism-theme');
+                 prismThemeNode.setAttribute('href', getPrismThemePath(theme));
+               }
+             }
+
+             function onPreloadThemeLoad(theme) 
+             {
+              var themeNode = document.getElementById('theme');
+              var themePreloadNode = document.getElementById('preload-theme');
+
+              themePreloadNode.onload = null;
+              themeNode.remove();
+              themePreloadNode.setAttribute('id', 'theme');
+              themeNode = themePreloadNode;
+
+              var themePreloadNodeNew = document.createElement('link');
+
+              themePreloadNodeNew.setAttribute('id', 'preload-theme');
+              themePreloadNodeNew.setAttribute('rel', 'stylesheet');
+              themeNode.insertAdjacentElement('afterend', themePreloadNodeNew);
+              localStorage.setItem('awsm-current-theme', theme);
+             }
+
+             function getThemePath(theme) 
+             {
+              if (!theme) return 'css/awsm.css';
+              return 'css/awsm_theme_' + theme + '.min.css';
+             }
+
+            </script>
+
+            <style>
+             select 
+             { 
+               margin : .1rem; 
+               margin-top: -1rem; 
+               height: 3rem; 
+               border-radius: .10px;
+             }
+            </style>
+
+            <span>
+             &#127912;
+            </span>
+            <select class="tooltiptext" 
+                    id="theme-changer" 
+                    onchange="reloadTheme(this.value)">
+              <option value="white" > white </option>
+              <option value="mischka"> mischka</option>
+              <option value="black"> dark </option>
+            </select>
+
+            <script>
+
+              if (currentTheme && currentTheme !== 'white') 
+              { 
+                document.getElementById('theme-changer').value = currentTheme; 
+              }
+
+            </script>
+
+          </section>
+
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -themeswitcher-end-->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+          </li>
+         </ul>
+       </nav>
+      </span>
+
+
+<!-- -tab-1 (-posts)-->  
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -home-section-begin-->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+     <br>
+     <section>
+
+      <style>
+
+       details[open] { border-bottom: 0px!important; margin: 0;}
+       progress 
+       {
+          -webkit-appearance: none;
+          appearance: none;
+           margin-left: 2.5rem;
+           border-radius: 10px;
+       }
+      fieldset 
+      {
+        border: 2px solid;
+        border-radius: 10px;
+        margin-top: 1rem;
+      } 
+      legend
+      {
+        border: 2px solid;
+        border-radius: 10px;
+        color: inherit;
+      } 
+
+      </style>
+
+      <span id="tab-1" 
+            class="tabcontent" 
+            style="display: block!important"
+      > 
+
+         <fieldset>
+
+           <h4>  Hi, I'm Jacob 👋 </h4>
+           <h3>  &nbsp;I'm a creative coder and freelance web dev! Here's some info about how I build on the web: </h3>
+           <p> &nbsp; 💥 &nbsp; I care a lot about Free and Open Source software. </p>
+           <p> &nbsp; 💥 &nbsp; Accessiblity comes first 🫶  </p>
+           <p> &nbsp; 💥 &nbsp; Progressive enhancement is key  </p>
+           <p> &nbsp; 💥 &nbsp; Code needs to be re-useable and concise 🧠 </p>
+           <p> &nbsp; 💥 &nbsp; Eye catching and creative UI's are a must 🤯 </p>
+           <p> &nbsp; 💥 &nbsp; Writing code is art 🖌️ </p>
+
+           <br>
+           <hr style="margin-left: 15%; margin-right: 15% ">
+          
+           <br>
+           <h4> Some Skill Stats &nbsp; 💪 :</h4>
+           <h3> &nbsp;  🔶 &nbsp; Javascript/HTML/CSS:</h3>
+            <progress value="185" 
+                      max="200">
+            </progress>
+           <h3> &nbsp;  🔶 &nbsp; Bash:</h3>
+            <progress value="150" 
+                      max="200">
+            </progress>
+           <h3> &nbsp;  🔶 &nbsp; Ruby:</h3>
+            <progress value="120" 
+                      max="200">
+            </progress>
+           <h3> &nbsp;  🔶 &nbsp; Lua:</h3>
+            <progress value="100" 
+                      max="200">
+            </progress>
+           <h3> &nbsp;  🔶 &nbsp; Web Tooling (React, Rails, Svelte):</h3>
+            <progress value="150" 
+                      max="200">
+            </progress>
+            <br><br>
+           <h3> By clicking the icon below, you can check out my PDF resume: </h3>
+           <br>
+           <a href="assets/jacobybarra-developer-resume.pdf">
+           <p style="font-size: 3rem; margin: none;">
+
+                              🪪
+           </p>
+           </a>
+           <h3>  Below you can be taken to a view of my portfolio with the lightbulb icon, or check out my github: </h3>
+           <br>
+           <p style=
+                    "
+                     text-align: left; 
+                     font-size:2rem; 
+                     margin-top: 2px;
+                    "
+            >
+           <a href="https://github.com/jacobmakestheweb">
+           <img src="assets/gh_logo.png" 
+                style=
+                      "
+                       border-radius: 50%;
+                       margin-top: .2rem;
+                       height: 2.3rem!important; 
+                       width: 3rem!important;
+                       float: left;
+                       margin-left: 0rem!important;
+                      "
+            >
+           </a>
+           <a href="#" 
+              class="tablinks" 
+              role="button" 
+              style="margin-bottom: .9rem;"
+              onclick="openTab(event, 'tab-3')"
+           >
+
+                              &nbsp; 💡 
+
+           </a>
+
+           </p>
+
+           <h3 style="text-align: right;"> ~ Thanks for checking out my stuff &nbsp;❤️ </h3>
+           <br>
+
+         </fieldset>
+
+       </details>
+
+       <br><br><br>
+
+      </span>
+
+     </section>
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -home-section-end -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+<!-- tab 2 (-feed)-->  
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -fedi-feed-section-start -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+     
+    <section>
+
+     <span id="tab-2" 
+           class="tabcontent"
+     > 
+
+     <style>
+
+     /* Main container */
+     .mt-timeline { position: relative; }
+     .mt-timeline a:link, .mt-timeline a:active,.mt-timeline a { text-decoration: none; color: darkblue; }
+     .mt-body { height: 100%; white-space: pre-wrap; word-wrap: break-word; }
+     .mt-body .invisible { display: none; }
+     /* Toot container */
+     .mt-toot
+     {
+      margin: 0 0.5rem 0 0;
+      padding: 1rem 0 2rem 65px;
+      position: relative;
+      min-height: 60px;
+      background-color: transparent;
+      border-bottom: .5px solid darkgrey;
+     }
+     .mt-toot:hover { cursor: pointer; background-color: rgba(124, 124, 124, 0.2); }
+     .mt-toot p:last-child { margin-bottom: 0; }
+     /* User icon */
+     .mt-user { display: table; font-weight: 600; }
+     .mt-avatar 
+     {
+       position: absolute;
+       top: 20px;
+       left: 5px;
+       width: 50px;
+       height: 50px;
+       background-color: transparent;
+       background-repeat: no-repeat;
+       background-position: 50% 50%;
+       background-size: contain;
+       background-color: #fff;
+       border-radius: 5px;
+     }
+     .mt-avatar-boosted { width: 40px; height: 40px; }
+     .mt-avatar-booster { width: 25px; height: 25px; top: 25px; left: 25px; }
+     /* Message */
+     .toot-text { margin-bottom: 0.25rem; }
+     .toot-text .ellipsis::after { content:'...'; }
+     .mt-error { color: darkred; background: lightpink; margin: 5px; padding: 10px; }
+     /* Poll */
+     .toot-poll { margin-bottom: 0.25rem; }
+     .toot-poll ul { list-style: none; padding: 0;  margin: 0; }
+     .toot-poll ul li:not(:last-child){ margin-bottom: 0.25rem; }
+     .toot-poll ul li:before { content: "◯"; padding-right: 0.5rem; }
+     .toot-media { overflow: hidden; margin-bottom: 0.25rem; }
+     .toot-media-preview { position: relative; margin-top: 0.25rem; height: auto; text-align: center; width: 100%; }
+     .toot-media-spoiler > img { filter: blur(2rem); }
+     .toot-media-preview a 
+     {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+     }
+     .img-ratio14_7 { position: relative; padding-top: 48.95%; /* 14:7 */ width: 100%; }
+     .img-ratio14_7 > img 
+     { 
+      width: 100%!important; 
+      height: auto!important;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+     }  
+     /* Date */
+     .toot-date { font-size: 0.75rem; opacity: 0.5; }
+     /* Loading-spinner */
+     .loading-spinner
+     {
+       height: 100%;
+       background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.0' viewBox='0 0 128 128' %3E%3Cg%3E%3Cpath d='M64 128A64 64 0 0 1 18.34 19.16L21.16 22a60 60 0 1 0 52.8-17.17l.62-3.95A64 64 0 0 1 64 128z' fill='%23404040'/%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 64 64' to='360 64 64' dur='1000ms' repeatCount='indefinite'%3E%3C/animateTransform%3E%3C/g%3E%3C/svg%3E");
+       background-repeat: no-repeat;
+       background-position: center center;
+       background-color: transparent;
+       background-size: min(2.5rem, calc(100% - 0.5rem));
+     }
+     /* See more btn */
+     .mt-seeMore { margin: 2rem auto; padding: 0 2rem; text-align: center; }
+     /* Hidden element */ 
+     .visually-hidden 
+     {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+     }
+     /* end feed css */
+
+     </style>
+
+     <fieldset>
+     <div id="mt-timeline" 
+          class="mt-timeline">
+        <div id="mt-body" 
+             class="mt-body"> 
+          <div class="loading-spinner"> </div> 
+        </div>
+     </div>
+     </fieldset>
+
+     <script src="js/masto-feed.js"></script>
+
+     </span>
+
+    </section>
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -fedi-feed-section-end -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+<!-- tab 3 (-projects)-->  
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -projects-section-start -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+    <section>
+
+
+     <span id="tab-3" 
+           class="tabcontent"
+     > 
+
+     <span>
+
+     <h2 style="font-size: 2rem;"> &#9889; NCBI Home-Page Re-Design </h2>
+     <br>
+   
+     <img src="assets/ncbipage.png" 
+          style=
+                "
+                 border-radius: 10px;
+                 height: 20rem; 
+                 width: 20rem;
+                "
+     >
+
+     <br>
+
+     <p> 
+     &nbsp; This page was an excercise in taking a very important website, and making it
+     even better with an interesting and responsive UI. 
+     </p>
+     <p> 
+     &nbsp; Although this page was one of my first when I learned the web, I'm proud that it still looks great 
+     and improves the usability of the original across mobile devices!
+     </p>
+     <h3 style=
+               "
+                text-align: center; 
+                color: orangered;
+               "
+     >
+     <a href="https://github.com/jacobmakestheweb/ncbipageredesign"> 🔶 Code &nbsp; </a>
+        &nbsp;
+     <a href="https://ncbi-redesign.netlify.app/"> &nbsp; 🔶 Site </a>
+     </h3>
+     <br>
+     </span>
+
+     <span>
+     <h2 style="font-size: 2rem;"> &#9889; Retail Cash Counter </h2>
+     <br>
+   
+     <img src="assets/Cash-Counting-App.png" 
+          style=
+                "
+                 border-radius: 10px;
+                 height: 20rem; 
+                 width: 20rem;
+                "
+     >
+
+     <br>
+     <p> 
+     &nbsp; This app was designed to help me personally in my retail job. Everyday, I would 
+     need to count a drawer full of cash. For most this might be simple, but I live with dyscalculia,
+     which can make dealing with lots of numbers a little difficult.
+     </p>
+     <p> 
+     &nbsp; I built this page leveraging my knowledge of Javascript at the time, and though I would have 
+     done a few things differently these days, I'm proud of having built this with no framework tooling which 
+     would have obscured the simplicity of the code, even if it would have saved me a little programming.
+
+     </p>
+     <h3 style=
+               "
+                text-align: center; 
+                color: orangered;
+               "
+     >
+     <a href="https://github.com/jacobmakestheweb/cash-counter/tree/master"> 🔶 Code &nbsp; </a>
+      &nbsp;
+     <a href="https://money-counting-app.glitch.me/">
+                &nbsp; 🔶 Site      
+     </a>
+     </h3>
+     <br>
+     </span>
+
+     <span>
+     <h2 style="font-size: 2rem;"> &#9889; Pomodoro Productivity Timer </h2>
+     <br>
+   
+     <img src="assets/productivity-timer.png" 
+          style=
+                "
+                 border-radius: 10px;
+                 height: 20rem; 
+                 width: 20rem;
+                "
+     >
+
+     <br>
+     <p> 
+     &nbsp; When I started learning code, I quickly realized I could potentially burn myself out on a day's work if 
+     I didn't pace myself. Hence, I wrote this web app to keep myself productive.
+     </p>
+     <p> 
+     &nbsp; Upon building this, I learned alot about Javascript's datetime API, and leveraged P5js (nowadays one of my favorite Javascript
+     libraries) to convert time to human readable formats. This was one of the first things I built in any programming language, introducing 
+     me to the need for well written and documented code.
+     </p>
+     <h3 style="text-align: center; color: orangered;">
+     <a href="https://github.com/jacobmakestheweb/Productivity-Timer">
+               🔶 Code &nbsp;
+     </a>
+      &nbsp;
+     <a href="https://productivity-timer.glitch.me/">
+               &nbsp; 🔶 Site      
+     </a>
+     </h3>
+     <br>
+     </span>
+
+     <span>
+     <h2 style="font-size: 2rem;">&#9889; Chordboard Web Synth </h2>
+     <p> 
+     &nbsp; For this project, I chose to build a web synth designed to make small chords, suitable for chip tune music.
+     The result is Chordboard, where the aim became ease of use for anyone no matter their musical background.
+     <img src="assets/chordboard.png" 
+          style=
+                "
+                 border-radius: 10px;
+                 height: 18rem; 
+                 width: 12rem; 
+                 margin-top: 1rem;
+                 float: right;
+                "
+     >
+     </p>
+     <p> 
+     &nbsp; When on the webpage, try pressing down 'q', 'a', 'z' at the same time. This is a Cm7 triad! Move this shape around and we can spell
+     new 7th triads, and even 9ths, and 11ths.
+     </p>
+     <p> 
+     &nbsp; To be sure, this may be a bit easier to grasp if your familiar with music theory, but the basic principle 
+     is that many of the qwerty keys on your keyboard will sound a short tone, and any combination of them will form a
+     'chordiod' or a small harmony in the Eb scale (or C minor). A more theory based description is available in the repo's
+     README section. 
+     </p>
+     <h3 style="text-align: center; color: orangered;">
+     <a href="https://github.com/jacobmakestheweb/chordBoard">
+                🔶 Code &nbsp;
+     </a>
+      &nbsp;
+     <a href="https://chordboard.glitch.me/">
+                &nbsp; 🔶 Site      
+     </a>
+     </h3>
+     <br>
+     </span>
+
+     <span>
+     <h2 style="font-size: 2rem;">&#9889; Svelte x Easy Toggle State App Starter </h2>
+     <br>
+
+     <img src="assets/sveltestarter.png" 
+          style=
+                "
+                 border-radius: 10px;
+                 height: 20rem; 
+                 width: 30rem;
+                " 
+     >
+     <p> 
+     &nbsp; This is an app starter distro, used for getting a UI up and started for a web application without much hassle.
+     </p>
+     <p> 
+     &nbsp; For the web heads out there, the idea here is to get some UI basics sqaured away 'out of the box'. 
+     </p>
+     <p>&nbsp; These include single file responsive components, the Svelte compiler framework for rendering updates, and Easy Toggle State,
+     a tiny library for making DOM changes without writing any javascript at all.
+     </p>
+     <p>&nbsp; The result is a developer experience I'm pretty proud of, as it gives a nice base to write a great app UI while minimizing 
+     headaches and learning curve that might come with using modern web frameworks.
+     </p>
+     <h3 style=
+              "
+                text-align: center; 
+                color: orangered;
+              "
+     >
+     <a href="https://github.com/jacobmakestheweb/svelte-ets-chota-starter">
+             🔶 Code &nbsp;
+     </a>
+      &nbsp;
+     <a href="https://svelte-x-chota-x-ets-library.glitch.me/">
+             &nbsp; 🔶 Site      
+     </a>
+     </h3>
+      <br>
+
+    <style>
+    .grid-container {  display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-rows: 1fr;
+      gap: 0px 0px;
+      grid-auto-flow: row;
+    }
+    .a { grid-area: 1 / 1 / 2 / 2; }
+    .b { grid-area: 1 / 2 / 2 / 3; }
+    .c { grid-area: 1 / 2 / 2 / 4; }
+    </style>
+ 
+     <span class="grid-container">
+      <span class="a"></span>
+
+      <div class="b">
+       <span style="text-align: left;">
+
+         <fieldset>
+         <h4>  
+          Find more of my code stuff around the web:
+           <a href="https://codepen.io/thedoseoftruth">::_codepen_::</a>
+           <a href="https://glitch.com/@jacobmakestheweb?utm_contnet=chordboard">::_glitch_::</a>
+         </h4>
+         <br>
+         </fieldset>
+
+       </span>
+      </span>
+      <span class="c"></span>
+
+     </span>
+    </span>
+   </section>
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -projects-section-end -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+
+     <script>
+
+        function openTab(evt, tab) 
+        {
+          var i, tabcontent, tablinks;
+          tabcontent = document.getElementsByClassName("tabcontent");
+
+          for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
+           tablinks = document.getElementsByClassName("tablinks");
+
+          for (i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
+
+          document.getElementById(tab).style.display = "block";
+           evt.currentTarget.className += " active";
+        }
+
+     </script>
+
+    </section>
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -tabnav-end-->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+   </main> 
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -footer-begin -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+    
+     <footer style='margin-top:8rem;'> Jacob Ybarra </footer>
+
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- -footer-end -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+  </body>
+</html>
